@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% include materializecss %}
+
+{% block fab %}
+    {% if user.is_authenticated %}
+    <div class="fixed-action-btn">
+        <a href="{% url 'projects:create' %}" class="btn-floating btn-large {{ colors.primary }}"><i class="large material-icons">add</i></a>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% if timer %}
+    <div class="section">
+        {% include "timers/timer_card.html" %}
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th class="hide-on-small-only">Description</th>
+                    <th class="hide-on-med-and-down">Last Used</th>
+                    <th class="center-align">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td class="hide-on-small-only">{{ project.description }}</td>
+                    <td class="hide-on-med-and-down">{{ project.last_used }}</td>
+                    <td class="right-align">
+                        {% if not project.last_used %}
+                        <form action="{% url 'projects:delete' slug=project.slug %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn-flat wave-effect {{ colors.secondary_text }}"><i class="material-icons">delete</i></button>
+                            <input type="hidden" name="next" value="{{ request.path }}" />
+                        </form>
+                        {% else %}
+                        <form action="{% url 'projects:archive' slug=project.slug %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn-flat wave-effect {{ colors.secondary_text }}">
+                                {% if project.archived %}
+                                <i class="material-icons">unarchive</i>
+                                {% else %}
+                                <i class="material-icons">archive</i>
+                                {% endif %}
+                            </button>
+                            <input type="hidden" name="next" value="{{ request.path }}?{{ request.GET.urlencode }}" />
+                        </form>
+                        {% endif %}
+                        <a href="{% url 'projects:edit' slug=project.slug %}" class="btn-flat"><i class="material-icons {{ colors.secondary_text }}">mode_edit</i></a>
+                        <form action="{% url 'timers:start' slug=project.slug %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn-flat wave-effect {{ colors.primary_text }} {% if timer %} disabled {% endif %}" action="submit"><i class="material-icons">play_arrow</i></button>
+                            <input type="hidden" name="next" value="{{ request.path }}" />
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <div class="section">
+        {% if "archived" not in request.GET %}
+            <a href="{% url 'projects:list' %}?archived" class="btn {{ colors.secondary }}">Archived</a>
+        {% else %}
+            <a href="{% url 'projects:list' %}" class="btn {{ colors.secondary }}">Back</a>
+        {% endif %}
+        </div>
+
+
+    </div>
+{% endblock %}

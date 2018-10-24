@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% with data=weekly_summary.data total=weekly_summary.total %}
+    <div class="section">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title {{ colors.primary_text }}">
+                    Weekly Summary
+                </span>
+                <p class="center">{{ begin.date }} - {{ end.date }}</p>
+                <p class="center {{ colors.secondary_text }}">Week {{ begin.week_of_year }}</p>
+                {% include 'reports/summary_table.html' %}
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+
+    {% for week in daily_summary %}
+    {% with data=week.data  totals=week.totals labels=week.labels %}
+    <div class="section">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title {{ colors.primary_text }}">Daily Summary</span>
+                <p class="center">{{ week.begin.date }} - {{ week.end.date }}</p>
+                <p class="center {{ colors.secondary_text }}">Week {{ week.begin.week_of_year }}</p>
+                {% include "reports/week_summary_table.html" %}
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+
+    <div class="section">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title {{ colors.primary_text }}">Records</span>
+                <p class="center">{{ begin.date }} - {{ end.date }}</p>
+                <p class="center {{ colors.secondary_text }}">Week {{ begin.week_of_year }}</p>
+                {% include 'reports/time_log_table.html' %}
+            </div>
+        </div>
+    </div>
+
+    {% include "reports/nav_links.html" %}
+{% endblock %}

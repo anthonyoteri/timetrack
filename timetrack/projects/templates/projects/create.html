@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load materializecss %}
+{% block content %}
+
+    <div class="section">
+        <div class="card">
+            <form class="site-form" action="{% url 'projects:create' %}" method="post">
+                <div class="card-content">
+                    <span class="card-title">Create Project</span>
+                    <button class="btn-floating halfway-fab waves-effect waves-light {{ colors.primary }}" type="submit" name="action">
+                        <i class="material-icons">create</i>
+                    </button>
+                      {% csrf_token %}
+                      {{ form | materializecss }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/slugify.js"></script>
+{% endblock %}

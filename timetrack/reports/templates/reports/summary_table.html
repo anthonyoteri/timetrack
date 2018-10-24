@@ -1,0 +1,20 @@
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Elapsed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project, elapsed in data.items %}
+        <tr>
+            <td>{{ project }}</td>
+            <td>{{ elapsed }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="{{ colors.primary }} {{ colors.light_text }} z-depth-2">
+            <td>TOTAL</td>
+            <td>{{ total }}</td>
+        </tr>
+    </tbody>
+</table>

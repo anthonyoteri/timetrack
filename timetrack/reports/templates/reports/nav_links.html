@@ -1,0 +1,5 @@
+<div class="section center">
+    <a href="{{ request.path }}?date={{ prev.date.isoformat }}" class="btn {{ colors.secondary }} {{ colors.light_text }}"><i class="material-icons">chevron_left</i></a>
+    <a href="{{ request.path }}" class="btn {{ colors.secondary }} {{ colors.light_text }}"><i class="material-icons">today</i></a>
+    <a href="{{ request.path }}?date={{ next.date.isoformat }}" class="btn {{ colors.secondary }} {{ colors.light_text }}"><i class="material-icons">chevron_right</i></a>
+</div>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block fab %}
+    {% if user.is_authenticated %}
+    <div class="fixed-action-btn">
+        <a href="{% url 'timers:create' %}" class="btn-floating btn-large {{ colors.primary }}"><i class="large material-icons">add</i></a>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="section">
+        {% for timer in timers %}
+        {% include "timers/timer_card.html" %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

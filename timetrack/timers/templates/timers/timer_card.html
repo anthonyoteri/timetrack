@@ -1,0 +1,20 @@
+<form action="{% url 'timers:stop' id=timer.id %}" method="POST">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ timer.project.name }}</span>
+            <p class="float_text">{{ timer.project.description }}</p>
+            <p class="float_text">Started at {{ timer.start }}</p>
+            {% if timer.stop %}
+            <p class="float_text">Stopped at {{ timer.stop }}</p>
+            {% endif %}
+        </div>
+        <div class="card-action">
+            <a href="{% url 'timers:edit' id=timer.id %}" class="btn-flat wave-effect {{ colors.secondary_text }} "><i class="material-icons">edit</i></a>
+        </div>
+        {% if not timer.stop %}
+        <button class="btn-floating halfway-fab {{ colors.primary }} right"><i class="material-icons">stop</i></button>
+        {% endif %}
+    </div>
+    <input type="hidden" name="next" value="{{ request.path }}">
+</form>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load materializecss %}
+{% block content %}
+
+<div class="section">
+    <div class="card">
+        <form class="site-form" action="{% url 'timers:create' %}" method="post">
+            <div class="card-content">
+                <span class="card-title">Create Timer</span>
+                <button class="btn-floating halfway-fab waves-effect waves-light {{ colors.primary }}" type="submit" name="action">
+                    <i class="material-icons">edit</i>
+                </button>
+                  {% csrf_token %}
+                  {% if form.non_field_errors %}
+                  <div class="card {{ colors.primary }} {{ colors.light_text }}">
+                      <div class="card-content">
+                          <span class="card-title">Error</span>
+                          <p>{{ form.non_field_errors }}</p>
+                      </div>
+                  </div>
+                  {% endif %}
+
+                  {{ form.non_field_errors }}
+                  {{ form.project | materializecss }}
+                  {{ form.start }}
+                  {{ form.stop }}
+                  <!-- Include the next target in the form data -->
+                  {% if request.GET.next %}
+                      <input type="hidden" name="next" value="{{ request.GET.next }}">
+                  {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Start</th>
+            <th>Stop</th>
+            <th>Elapsed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for timer in records %}
+        <tr>
+            <td>{{ timer.project.name }}</td>
+            <td>{{ timer.start }}</td>
+            {% if timer.stop %}
+            <td>{{ timer.stop }}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            <td>{{ timer.elapsed }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

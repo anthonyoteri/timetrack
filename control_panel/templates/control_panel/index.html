@@ -16,7 +16,7 @@
     {% endif %}
 
     <div class="section">
-        <form action="{% url 'backup:restore' %}" enctype="multipart/form-data" method="POST">
+        <form action="{% url 'control_panel:restore' %}" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
             <div class="card">
                 <div class="card-content">
@@ -36,10 +36,14 @@
 
                 </div>
                 <div class="card-actions">
-                    <a href="{% url 'backup:backup' %}" class="btn-flat waves-effect waves-light {{ colors.secondary_text }}">Backup <i class="material-icons right">backup</i></a>
+                    <a href="{% url 'control_panel:backup' %}" class="btn-flat waves-effect waves-light {{ colors.secondary_text }}">Backup <i class="material-icons right">backup</i></a>
                     <button class="btn-flat waves-effect.waves-light {{ colors.secondary_text }}" action="submit">Restore <i class="material-icons right">restore</i></button>
                 </div>
             </div>
         </form>
+    </div>
+
+    <div class="section">
+        <a href="/admin" class="btn">Django Admin Site</a>
     </div>
 {% endblock %}

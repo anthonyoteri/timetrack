@@ -18,7 +18,7 @@ from timers.models import Timer
 @login_required(login_url="/accounts/login")
 def index_view(request):
 
-    return render(request, "backup/index.html", theme.apply({}))
+    return render(request, "control_panel/index.html", theme.apply({}))
 
 
 @login_required(login_url="/accounts/login")
@@ -87,13 +87,13 @@ def restore_view(request):
         if "dump_file" not in request.FILES:
             return render(
                 request,
-                "backup/index.html",
+                "control_panel/index.html",
                 theme.apply({"errors": ["You must select a file to restore"]}),
             )
 
-        # Make sure all existing records are wiped
-        Timer.objects.all().delete()
-        Project.objects.all().delete()
+        # Make sure all existing records for this user are wiped
+        Timer.objects.filter(project__user=request.user).delete()
+        Project.objects.filter(user=request.user).delete()
 
         try:
             with gzip.open(request.FILES["dump_file"], "rb") as f:
@@ -146,6 +146,6 @@ def restore_view(request):
         except OSError:
             return render(
                 request,
-                "backup/index.html",
+                "control_panel/index.html",
                 theme.apply({"errors": ["Backup file is invalid!"]}),
             )

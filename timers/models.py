@@ -19,6 +19,8 @@ class DateTimeField(BaseDateTimeField):
 
 
 class Timer(models.Model):
+    class Meta:
+        unique_together = ("project", "start")
 
     project = models.ForeignKey(Project, on_delete="CASCADE")
 

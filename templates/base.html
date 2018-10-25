@@ -33,6 +33,7 @@
                             <li><a href="{% url 'projects:list' %}">Projects</a></li>
                             <li><a href="{% url 'timers:list' %}">Timers</a></li>
                             <li><a class="dropdown-trigger" href="#!" data-target="dropdown-reports">Reports<i class="material-icons right">arrow_drop_down</i></a></li>
+                            <li><a href="{% url 'backup:index' %}">Backup</a></li>
                             <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
                             {% else %}
                             <li><a href="{% url 'accounts:login' %}">Login</a></li>
@@ -52,6 +53,8 @@
                 <li><a href="{% url 'reports:day' %}">Daily Report</a></li>
                 <li><a href="{% url 'reports:week' %}">Weekly Report</a></li>
                 <li><a href="{% url 'reports:month' %}">Monthly Report</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'backup:index' %}">Backup</a></li>
                 <li class="divider"></li>
                 <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
                 {% else %}

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "projects",
     "timers",
     "reports",
+    "backup",
 ]
 
 MIDDLEWARE = [

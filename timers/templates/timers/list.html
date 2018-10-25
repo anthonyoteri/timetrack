@@ -16,4 +16,29 @@
         {% endfor %}
     </div>
 
+    <div class="section">
+        <div class="center">
+            <!-- The order is reversed, so older is next, newer is previous -->
+            {% if timers.has_next %}
+            <a href="{{ request.path }}?page={{ timers.paginator.num_pages }}" class="btn {{ colors.secondary }}"><i class="material-icons">first_page</i></a>
+            <a href="{{ request.path }}?page={{ timers.next_page_number }}" class="btn {{ colors.secondary }}"><i class="material-icons">chevron_left</i></a>
+
+            {% else %}
+            <a href="#" class="btn disabled"><i class="material-icons">first_page</i></a>
+            <a href="#" class="btn disabled"><i class="material-icons">chevron_left</i></a>
+            {% endif %}
+
+            {% if timers.has_previous %}
+            <a href="{{ request.path }}?page={{ timers.previous_page_number }}" class="btn {{ colors.secondary }}"><i class="material-icons">chevron_right</i></a>
+            <a href="{{ request.path }}?page=1" class="btn {{ colors.secondary }}"><i class="material-icons">last_page</i></a>
+            {% else %}
+            <a href="#" class="btn disabled"><i class="material-icons">chevron_right</i></a>
+            <a href="#" class="btn disabled"><i class="material-icons">last_page</i></a>
+            {% endif %}
+        </div>
+        <div class="center">
+            <label>Page {{ timers.number }} of {{ timers.paginator.num_pages }}</label>
+        </div>
+    </div>
+
 {% endblock %}

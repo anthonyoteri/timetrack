@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 import pendulum
@@ -17,28 +18,19 @@ from . import services
 
 @login_required(login_url="/accounts/login")
 def list_view(request):
+    timer_list = (
+        Timer.objects.filter(project__user=request.user).order_by("-start").all()
+    )
+    page = request.GET.get("page", 1)
+
+    paginator = Paginator(timer_list, 25)
 
     try:
-        begin = pendulum.parse(request.GET.get("from"))
-    except TypeError:
-        begin = None
-
-    try:
-        end = pendulum.parse(request.GET.get("to"))
-    except TypeError:
-        end = None
-
-    query = Timer.objects.filter(project__user=request.user).order_by("-start")
-
-    if begin:
-        print(f"Got begin {begin}")
-        query = query.filter(start__gte=begin)
-
-    if end:
-        print(f"Got end {end}")
-        query = query.filter(start__lte=end)
-
-    timers = query.all()
+        timers = paginator.page(page)
+    except PageNotAnInteger:
+        timers = paginator.page(1)
+    except EmptyPage:
+        timers = paginator.page(paginator.num_pages)
 
     return render(request, "timers/list.html", theme.apply({"timers": timers}))
 

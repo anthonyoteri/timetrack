@@ -1,0 +1,8 @@
+Django==2.1.2
+django-materializecss-form==1.1.10
+pendulum==2.0.3
+psycopg2-binary==2.7.5
+python-dateutil==2.7.3
+pytz==2018.6
+pytzdata==2018.5
+six==1.11.0

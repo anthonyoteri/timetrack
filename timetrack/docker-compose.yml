@@ -1,0 +1,41 @@
+version: "3.7"
+
+x-code-mount: &code-mount
+    "./:/code:delegated"
+
+services:
+    db:
+        image: postgres:10
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+
+    web:
+        build: .
+        image: timetrack
+
+        command: ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]
+
+        volumes:
+          - *code-mount
+
+        ports:
+          - "8000:8000"
+
+        depends_on:
+          - migration
+          - db
+
+    migration:
+        build: .
+        image: timetrack
+
+        command: ["python", "/code/manage.py", "migrate", "--no-input"]
+
+        volumes:
+            - *code-mount
+
+        depends_on:
+            - db
+
+volumes:
+    postgres_data:

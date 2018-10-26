@@ -14,7 +14,7 @@ services:
 
     app:
         build: .
-        image: timetrack
+        image: anthonyoteri/timetrack:3.2
 
         command: ["gunicorn", "--workers=2", "--bind=0.0.0.0:8000", "--name=timetrack", "timetrack.wsgi"]
 
@@ -34,7 +34,7 @@ services:
         image: nginx:1.15-alpine
 
         ports:
-            - 8000:80
+            - 80:80
 
         volumes:
             - ./config:/etc/nginx/conf.d

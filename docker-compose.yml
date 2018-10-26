@@ -14,7 +14,7 @@ services:
 
     app:
         build: .
-        image: anthonyoteri/timetrack:3.2
+        image: anthonyoteri/timetrack:latest
 
         command: ["gunicorn", "--workers=2", "--bind=0.0.0.0:8000", "--name=timetrack", "timetrack.wsgi"]
 

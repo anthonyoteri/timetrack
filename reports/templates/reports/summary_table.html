@@ -1,3 +1,4 @@
+{% load time_format %}
 <table class="striped">
     <thead>
         <tr>
@@ -9,12 +10,12 @@
         {% for project, elapsed in data.items %}
         <tr>
             <td>{{ project }}</td>
-            <td>{{ elapsed }}</td>
+            <td>{{ elapsed | format_timedelta }}</td>
         </tr>
         {% endfor %}
         <tr class="{{ colors.primary }} {{ colors.light_text }} z-depth-2">
             <td>TOTAL</td>
-            <td>{{ total }}</td>
+            <td>{{ total | format_timedelta }}</td>
         </tr>
     </tbody>
 </table>

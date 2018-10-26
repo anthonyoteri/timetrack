@@ -1,3 +1,4 @@
+{% load time_format %}
 <table class="striped">
     <thead>
         <tr>
@@ -17,7 +18,7 @@
             {% else %}
             <td></td>
             {% endif %}
-            <td>{{ timer.elapsed }}</td>
+            <td>{{ timer.elapsed | format_timedelta }}</td>
         </tr>
         {% endfor %}
     </tbody>

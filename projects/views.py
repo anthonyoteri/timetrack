@@ -7,7 +7,7 @@ from timetrack import theme
 
 from .forms import ProjectForm, ProjectEditForm
 from .models import Project
-
+from .selectors import get_project, has_projects, projects_for_user
 
 # Create your views here.
 
@@ -15,14 +15,11 @@ from .models import Project
 @login_required(login_url="/accounts/login")
 def list_view(request):
 
-    if not Project.objects.filter(user=request.user).count():
+    if not has_projects(user=request.user):
         return redirect("projects:create")
 
-    projects = (
-        Project.objects.filter(user=request.user, archived="archived" in request.GET)
-        .order_by("created")
-        .all()
-    )
+    archived = "archived" in request.GET
+    projects = projects_for_user(user=request.user, archived=archived)
 
     # Get the active timer to display the card
     active = timers.services.get_active_timer(request.user)
@@ -52,7 +49,7 @@ def create_view(request):
 @login_required(login_url="/accounts/login")
 def edit_view(request, slug):
 
-    instance = Project.objects.get(user=request.user, slug=slug)
+    instance = get_project(user=request.user, slug=slug)
 
     if request.method == "POST":
         form = ProjectEditForm(instance=instance, data=request.POST)
@@ -69,7 +66,7 @@ def edit_view(request, slug):
 @login_required
 def archive_view(request, slug):
     if request.method == "POST":
-        instance = Project.objects.get(user=request.user, slug=slug)
+        instance = get_project(user=request.user, slug=slug)
         instance.archived = not instance.archived
         instance.save()
 
@@ -81,7 +78,7 @@ def archive_view(request, slug):
 @login_required(login_url="/accounts/login")
 def delete_view(request, slug):
     if request.method == "POST":
-        Project.objects.get(user=request.user, slug=slug).delete()
+        get_project(user=request.user, slug=slug).delete()
 
         if "next" in request.POST:
             return redirect(request.POST.get("next"))

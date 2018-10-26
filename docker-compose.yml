@@ -5,37 +5,53 @@ x-code-mount: &code-mount
 
 services:
     db:
-        image: postgres:10
+        image: postgres:11
         volumes:
             - postgres_data:/var/lib/postgresql/data/
 
-    web:
+        networks:
+            - db_network
+
+    app:
         build: .
         image: timetrack
 
-        command: ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]
-
-        volumes:
-          - *code-mount
-
-        ports:
-          - "8000:8000"
-
-        depends_on:
-          - migration
-          - db
-
-    migration:
-        build: .
-        image: timetrack
-
-        command: ["python", "/code/manage.py", "migrate", "--no-input"]
+        command: ["gunicorn", "--workers=2", "--bind=0.0.0.0:8000", "--name=timetrack", "timetrack.wsgi"]
 
         volumes:
             - *code-mount
+            - static_volume:/code/static
 
         depends_on:
             - db
 
+        networks:
+          - nginx_network
+          - db_network
+
+
+    web:
+        image: nginx:1.15-alpine
+
+        ports:
+            - 8000:80
+
+        volumes:
+            - ./config:/etc/nginx/conf.d
+            - static_volume:/code/static
+
+        depends_on:
+            - app
+
+        networks:
+            - nginx_network
+
 volumes:
     postgres_data:
+    static_volume:
+
+networks:
+    nginx_network:
+        driver: bridge
+    db_network:
+        driver: bridge

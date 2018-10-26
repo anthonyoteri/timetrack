@@ -1,3 +1,4 @@
+{% load time_format %}
 <table class="striped">
     <thead>
         <tr>
@@ -12,14 +13,18 @@
         <tr>
             <td>{{ project }}</td>
             {% for value in cols %}
-            <td>{{ value }}</td>
+            {% if not value %}
+            <td></td>
+            {% else %}
+            <td>{{ value | format_timedelta }}</td>
+            {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
         <tr class="{{ colors.primary }} {{ colors.light_text }} z-depth-2">
             <td>Subtotal</td>
             {% for value in totals %}
-            <td>{{ value }}</td>
+            <td>{{ value | format_timedelta }}</td>
             {% endfor %}
         </tr>
     </tbody>
